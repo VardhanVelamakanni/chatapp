@@ -1,13 +1,16 @@
-from django.contrib.auth.forms import AuthenticationForm  # Add this import
-from django.contrib.auth import login, authenticate
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required  # Import the decorator
-from django.db.models import Q  # Import Q for filtering with OR conditions
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from .models import Message
+from django.db.models import Q
+from django.contrib.auth.models import User
+
+
 def login_view(request):
+    """
+    Handles user login.
+    """
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -19,9 +22,10 @@ def login_view(request):
 
     return render(request, 'chat/login.html', {'form': form})
 
-    return render(request, 'chat/login.html', {'form': form})
-# Index view (Displays all users except the logged-in one)
 def signup(request):
+    """
+    Handles user registration.
+    """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -32,25 +36,48 @@ def signup(request):
         form = UserCreationForm()
 
     return render(request, 'chat/signup.html', {'form': form})
+
 @login_required
 def index(request):
+    """
+    Displays all users except the logged-in one.
+    """
     users = User.objects.exclude(id=request.user.id)
     return render(request, 'chat/index.html', {'users': users})
 
-# Signup view (Handles user registration)
-
- # Ensure only logged-in users can access this view
+@login_required
 def chat_view(request, user_id):
-    recipient = get_object_or_404(User, id=user_id)
-    
-    # Get chat messages between logged-in user and the recipient
+    """
+    Displays the chat between the logged-in user and the selected user.
+    """
+    recipient = get_object_or_404(User, id=user_id)  # Get the recipient by user_id
     messages = Message.objects.filter(
-        Q(sender=request.user, recipient=recipient) | Q(sender=recipient, recipient=request.user)
-    ).order_by('timestamp')
-    
+        Q(sender=request.user, recipient=recipient) |
+        Q(sender=recipient, recipient=request.user)
+    ).order_by('timestamp')  # Fetch messages between logged-in user and recipient
+
     if request.method == 'POST':
         content = request.POST.get('content')
-        Message.objects.create(sender=request.user, recipient=recipient, content=content)
-    
-    return render(request, 'chat/chat.html', {'recipient': recipient, 'messages': messages})
+        if content:
+            create_message(request.user, recipient, content)  # Save the message in the database
+        return redirect('chat_view', user_id=user_id)
 
+    return render(request, 'chat/chat.html', {
+        'recipient': recipient,
+        'messages': messages,
+        'user': request.user,
+    })
+
+@login_required
+def send_message(request, user_id):
+    """
+    Handles sending messages to the selected user.
+    """
+    recipient = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content:
+            # Save the message in the database
+            create_message(request.user, recipient, content)
+        # Redirect back to the chat view
+        return redirect('chat_view', user_id=user_id)

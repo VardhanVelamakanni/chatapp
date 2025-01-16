@@ -34,3 +34,38 @@ body {
 .send-box {
     margin-top: 20px;
 }
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.messages {
+    padding: 10px;
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.sent {
+    text-align: right;
+    background-color: #dcf8c6;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+
+.received {
+    text-align: left;
+    background-color: #f1f0f0;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+
+.timestamp {
+    display: block;
+    font-size: 0.8em;
+    color: #888;
+}

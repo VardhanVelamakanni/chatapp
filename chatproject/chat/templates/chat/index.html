@@ -7,7 +7,7 @@
         <div class="col-md-8">
             <div class="list-group">
                 {% for user in users %}
-                    <a href="{% url 'chat' user.id %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'chat_view' user.id %}" class="list-group-item list-group-item-action">
                         {{ user.username }}
                     </a>
                 {% empty %}
