@@ -5,9 +5,9 @@
 <div class="container mt-4">
     <h1 class="text-center">Chat with {{ recipient.username }}</h1>
 
-    <!-- Chat Layout -->
+   
     <div class="row">
-        <!-- User List -->
+        
         <div class="col-md-3">
             <div class="user-list border rounded p-3" style="max-height: 400px; overflow-y: auto; background-color: #f1f1f1;">
                 <h5 class="text-center">Users</h5>
@@ -24,10 +24,10 @@
             </div>
         </div>
 
-        <!-- Chat Box -->
+        
         <div class="col-md-9">
             <div class="chat-container mt-3">
-                <!-- Chat Box -->
+               
                 <div class="chat-box p-3 border rounded" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
                     {% if messages %}
                         {% for message in messages %}
@@ -49,7 +49,7 @@
                     {% endif %}
                 </div>
 
-                <!-- Send Message Form -->
+             
                 <form method="post" class="send-box mt-3">
                     {% csrf_token %}
                     <div class="input-group">

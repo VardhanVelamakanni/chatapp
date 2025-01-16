@@ -16,7 +16,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('index')  # Redirect to the index page
+            return redirect('index')  
     else:
         form = AuthenticationForm()
 
@@ -30,8 +30,8 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Log the user in after successful signup
-            return redirect('index')  # Redirect to index page after signup
+            login(request, user)  
+            return redirect('index')  
     else:
         form = UserCreationForm()
 
@@ -40,8 +40,8 @@ def logout_view(request):
     """
     Handles user logout.
     """
-    logout(request)  # Logs the user out
-    return redirect('login')  # Redirect to login page after logout
+    logout(request)  
+    return redirect('login')  
 @login_required
 def index(request):
     """
@@ -55,13 +55,13 @@ def chat_view(request, user_id):
     """
     Displays the chat between the logged-in user and the selected user.
     """
-    recipient = get_object_or_404(User, id=user_id)  # Get the recipient
-    users = User.objects.exclude(id=request.user.id)  # Get all other users
+    recipient = get_object_or_404(User, id=user_id)  
+    users = User.objects.exclude(id=request.user.id)  
 
     messages = Message.objects.filter(
         Q(sender=request.user, recipient=recipient) |
         Q(sender=recipient, recipient=request.user)
-    ).order_by('timestamp')  # Get the chat messages
+    ).order_by('timestamp')  
 
     if request.method == 'POST':
         content = request.POST.get('content')
@@ -77,7 +77,7 @@ def chat_view(request, user_id):
         'recipient': recipient,
         'users': users,
         'messages': messages,
-        'page_type': 'chat',  # Add page type context
+        'page_type': 'chat',  
     })
 
 @login_required
@@ -89,7 +89,7 @@ def send_message(request, user_id):
     if request.method == 'POST':
         content = request.POST.get('content')
         if content:
-            # Save the message in the database
+
             create_message(request.user, recipient, content)
-        # Redirect back to the chat view
+        
         return redirect('chat_view', user_id=user_id)

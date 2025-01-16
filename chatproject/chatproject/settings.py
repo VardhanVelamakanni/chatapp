@@ -133,5 +133,5 @@ CHANNEL_LAYERS = {
     },
 }
 STATIC_URL = '/static/'
-# settings.py
-LOGIN_URL = '/login/'  # Redirect users to the login page if they are not authenticated
+
+LOGIN_URL = '/login/'  

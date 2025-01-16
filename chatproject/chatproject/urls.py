@@ -4,6 +4,6 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('chat.urls')),  # Include the chat app URLs
-    path('', lambda request: redirect('chat/', permanent=True)),  # Redirect root to /chat/
+    path('', include('chat.urls')),  
+    path('', lambda request: redirect('chat/', permanent=True)),  
 ]
