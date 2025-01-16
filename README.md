@@ -17,4 +17,5 @@ The Chat Application is a real-time messaging platform built using Django and We
   - Different styles for sent and received messages.
 - **Logout Functionality**: Allows users to end their session securely.
 
-https://vardhan243.pythonanywhere.com/login/?next=/
+vardhan243.pythonanywhere.com
+click on it for use
