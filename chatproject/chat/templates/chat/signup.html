@@ -5,24 +5,29 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h1 class="text-center mb-4">Sign Up</h1>
+            <!-- Form Wrapper -->
             <form method="post" class="border p-4 rounded bg-light">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password1" id="password" class="form-control" placeholder="Enter your password" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password2" class="form-label">Confirm Password</label>
-                    <input type="password" name="password2" id="password2" class="form-control" placeholder="Confirm your password" required>
-                </div>
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <!-- Render Form Fields Dynamically -->
+                {{ form.as_p }}
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary">Sign Up</button>
                 </div>
             </form>
+            <p class="text-center mt-3">
+                Already have an account? <a href="{% url 'login' %}">Log in</a>.
+            </p>
         </div>
     </div>
 </div>
