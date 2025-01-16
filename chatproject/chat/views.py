@@ -36,36 +36,48 @@ def signup(request):
         form = UserCreationForm()
 
     return render(request, 'chat/signup.html', {'form': form})
-
+def logout_view(request):
+    """
+    Handles user logout.
+    """
+    logout(request)  # Logs the user out
+    return redirect('login')  # Redirect to login page after logout
 @login_required
 def index(request):
     """
     Displays all users except the logged-in one.
     """
     users = User.objects.exclude(id=request.user.id)
-    return render(request, 'chat/index.html', {'users': users})
+    return render(request, 'chat/index.html', {'users': users, 'page_type': 'users'})
 
 @login_required
 def chat_view(request, user_id):
     """
     Displays the chat between the logged-in user and the selected user.
     """
-    recipient = get_object_or_404(User, id=user_id)  # Get the recipient by user_id
+    recipient = get_object_or_404(User, id=user_id)  # Get the recipient
+    users = User.objects.exclude(id=request.user.id)  # Get all other users
+
     messages = Message.objects.filter(
         Q(sender=request.user, recipient=recipient) |
         Q(sender=recipient, recipient=request.user)
-    ).order_by('timestamp')  # Fetch messages between logged-in user and recipient
+    ).order_by('timestamp')  # Get the chat messages
 
     if request.method == 'POST':
         content = request.POST.get('content')
         if content:
-            create_message(request.user, recipient, content)  # Save the message in the database
+            Message.objects.create(
+                sender=request.user,
+                recipient=recipient,
+                content=content
+            )
         return redirect('chat_view', user_id=user_id)
 
     return render(request, 'chat/chat.html', {
         'recipient': recipient,
+        'users': users,
         'messages': messages,
-        'user': request.user,
+        'page_type': 'chat',  # Add page type context
     })
 
 @login_required

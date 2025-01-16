@@ -5,7 +5,7 @@
 <div class="container mt-4">
     <h1 class="text-center">Chat with {{ recipient.username }}</h1>
 
-    <!-- Chat Container -->
+    <!-- Chat Layout -->
     <div class="row">
         <!-- User List -->
         <div class="col-md-3">
@@ -31,11 +31,15 @@
                 <div class="chat-box p-3 border rounded" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="chat-message {% if message.sender == user %}text-end{% else %}text-start{% endif %} mb-2">
-                                <div class="d-inline-block p-2 rounded {% if message.sender == user %}bg-success text-white{% else %}bg-secondary text-white{% endif %}">
-                                    <strong>{{ message.sender.username }}:</strong> {{ message.content }}
-                                    <div class="text-muted small" style="font-size: 0.8em;">
-                                        {{ message.timestamp|date:"M d, Y H:i" }}
+                            <div class="mb-3">
+                                <div class="d-flex {% if message.sender == user %}justify-content-end{% else %}justify-content-start{% endif %}">
+                                    <div class="p-2 rounded {% if message.sender == user %}bg-success text-white{% else %}bg-secondary text-white{% endif %}" 
+                                         style="max-width: 70%; word-wrap: break-word;">
+                                        <strong>{{ message.sender.username }}</strong><br>
+                                        {{ message.content }}
+                                        <div class="text-muted small mt-1" style="font-size: 0.8em;">
+                                            {{ message.timestamp|date:"M d, Y H:i" }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
