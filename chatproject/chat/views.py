@@ -31,7 +31,7 @@ class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Enter your username'}),
-        max_length=5 # You can increase or remove max_length if required
+        max_length=10 # You can increase or remove max_length if required
     )
 
     class Meta:
