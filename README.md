@@ -117,5 +117,5 @@ $ docker-compose up --build
 MIT License
 
 ## Author
-Your Name - [GitHub Profile](https://github.com/yourusername)
+Hemavardhan Velamakanni- [GitHub Profile](https://github.com/VardhanVelamakanni)
 
